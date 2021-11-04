@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1636056121 source:/home/donatien/Documents/Projet C/Projet C/main.c
+	<stdio.h>
+	<stdlib.h>
+	"fonctions.h"
+
+1636055379 source:/home/donatien/Documents/Projet C/Projet C/fonctions1.c
+	"fonctions.h"
+
+1636056304 /home/donatien/Documents/Projet C/Projet C/fonctions.h
+	"macros.h"
+	"structures.h"
+
+1636054791 /home/donatien/Documents/Projet C/Projet C/macros.h
+
+1636055415 /home/donatien/Documents/Projet C/Projet C/structures.h
+
+1636055968 source:/home/donatien/Documents/Projet C/Projet C/fonctions2.c
+	"fonctions.h"
+
+1636055930 source:/home/donatien/Documents/Projet C/Projet C/fonctions3.c
+	"fonctions.h"
+
+1636056297 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions1.c
+	"fonctions.h"
+	<stdio.h>
+
+1636056304 /home/donatien/Documents/Projet C/Projet C - Motus/fonctions.h
+	"macros.h"
+	"structures.h"
+
+1636054791 /home/donatien/Documents/Projet C/Projet C - Motus/macros.h
+
+1636055415 /home/donatien/Documents/Projet C/Projet C - Motus/structures.h
+
+1636055968 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions2.c
+	"fonctions.h"
+
+1636055930 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions3.c
+	"fonctions.h"
+
