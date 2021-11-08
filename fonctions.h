@@ -22,6 +22,8 @@ void sauvegarder_partie(Partie * partie );
 
 Partie * charger_partie(int id);
 
+void print(char *fichier);
+
 void interface_graphique(Partie *partie);
 
  /*

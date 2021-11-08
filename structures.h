@@ -19,3 +19,4 @@ typedef struct Partie{
 
 
 #endif // STRUCTURES_H_INCLUDED
+

@@ -27,4 +27,6 @@
 #define NONGAGNE 0
 
 
+#define TAILLE_MAX 200
+
 #endif // MACROS_H_INCLUDED
