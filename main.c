@@ -4,7 +4,9 @@
 
 int main()
 {
-    printf("Projet C : Jeu Motus !\n");
+    Partie * partie = initialiser_partie(MOYEN,FRANCAIS,7,"MANGEES","Dinyad");
+    strcpy(partie->mots_proposes[0],"MANGUES");
+    interface_graphique(partie);
 
     return 0;
 

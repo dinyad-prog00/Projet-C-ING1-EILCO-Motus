@@ -8,15 +8,9 @@
 
 char * mot_aleatoire(int dictonnaire) ;
 
-int recuperer_type_partie();// un joueur ou deux
-
 int recuperer_niveau();
 
-SousPartie * initialiser_spartie(char * mot); // continuer la partie
-
-//void * initialiser_partie(int type); // initialisation des options,du type, partie de 10 mots à retrouver
-PartieUnJoueur * initialiser_partie_un_joueur();
-PartieDeuxJoueurs * initialiser_partie_2_joueurs();
+Partie * initialiser_partie(int niveau, int dictionnaire,int taille_mot,char * joueur, char * mot);
 
 char * recuperer_mot(); //
 
@@ -24,16 +18,11 @@ int valider(char * mot);
 
 int verifier_correspondance(char * mots_propose,void * partie);
 
-//void sauvegarder_partie(void * partie ,int type);
+void sauvegarder_partie(Partie * partie );
 
-void sauvegarder_partie_deux_joueurs(PartieDeuxJoueurs * p);
-void sauvegarder_partie_un_joueur(PartieUnJoueur * p);
+Partie * charger_partie(int id);
 
-//void * charger_partie(int id,int type);
-PartieUnJoueur * charger_partie_un_joueur(int id);
-PartieDeuxJoueurs * charger_partie_2_joueurs(int id);
-
-void interface_graphique(void *partie,int type);
+void interface_graphique(Partie *partie);
 
  /*
 if(type==0){
