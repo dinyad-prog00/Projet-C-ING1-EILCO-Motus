@@ -5,26 +5,45 @@
 
 int main()
 {
+    Partie * partie = NULL;
+    int id;
+    int continuer=1;
 
     //Juste un test
-    Partie * partie = initialiser_partie(MOYEN,FRANCAIS,7,"MANGEES","Dinyad");
-    char  mot[10];
-    interface_graphique(partie);
-    while(partie->nb_propos!=6 && partie->resultat != GAGNE)
-    {
-        printf("Mot : ");
-        scanf("%s",mot);
-
-        if(strcmp(mot,partie->mot_a_trouver)==0)
+    while(continuer)
+    {   clear_console();
+        switch(menu())
         {
-            partie->resultat=GAGNE;
-            printf("Bravoooo !!");
-        }
+            case 1 :
+                partie = initialiser_partie(MOYEN,FRANCAIS,7,"MANGEES","Dinyad");
+                clear_console();
+                jouer(partie);
+            break;
+            case 2 :
 
-        strcpy(partie->mots_proposes[partie->nb_propos],mot);
-        partie->nb_propos++;
-        interface_graphique(partie);
+                printf("id : ");
+                scanf("%d",&id);
+                partie = charger_partie(id);
+                if(partie)
+                {
+                    getchar();
+                    visualiser_une_partie(partie);
+                }
+                else
+                {
+                    printf("Entrer pour continuer !");
+                    getchar();
+                    getchar();
+
+                }
+            break;
+            case 3 :
+            printf("\nBYE !!");
+            continuer=0;
+            break;
+        }
     }
+
 
 
 

@@ -12,7 +12,7 @@ int recuperer_niveau();
 
 Partie * initialiser_partie(int niveau, int dictionnaire,int taille_mot,char * joueur, char * mot);
 
-char * recuperer_mot(); //
+char * recuperer_mot();
 
 int valider(char * mot);
 
@@ -22,10 +22,13 @@ void sauvegarder_partie(Partie * partie );
 
 Partie * charger_partie(int id);
 
+void visualiser_une_partie(Partie * partie);
+
 void print(char *fichier);
-
+void clear_console();
 void interface_graphique(Partie *partie);
-
+int menu();
+void jouer(Partie * partie);
  /*
 if(type==0){
 	PartieUnJoueur * p = (PartieUnJoueur *) partie;
@@ -46,6 +49,8 @@ void statistique_partie(int id_partie);
 void statistiques_globales();
 
 int quitter();
+
+
 
 
 
