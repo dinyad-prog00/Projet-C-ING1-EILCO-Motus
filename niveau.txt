@@ -4,12 +4,11 @@
             ######################################################
             ##                                                  ##            
             -----------------------------------------------------
-                                Menu principal
+                                   Niveau
             -----------------------------------------------------
-                1-Jouer une nouvelle partie
-                2-Continuer une partie
-                3-Visualiser une partie
-                4-Quitter
-                ...
+                1-Facile
+                2-Moyen
+                3-Difficile
+                4-Très difficile
             -----------------------------------------------------
             

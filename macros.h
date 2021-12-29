@@ -5,11 +5,14 @@
 #define J1 0
 #define J2 1
 
+//Nombre de coup max
+#define COUP_MAX 6
 
 //Les niveaux
-#define FACILE 0
-#define MOYEN 1
-#define DIFFICILE 2
+#define FACILE 1
+#define MOYEN 2
+#define DIFFICILE 3
+#define TDIFFICILE 4
 
 
 //Les états
@@ -18,12 +21,20 @@
 
 
 //Les dictionnaires
-#define FRANCAIS 0
-#define ANGLAIS 1
-#define ESPAGNOL 2
+#define FRANCAIS 1
+#define ANGLAIS 2
+
+
+//Les types de partie
+#define _1_JOUEUR 1
+#define JOUEUR_ORDI 2
+#define _2_JOUEURS 3
+
 
 //Résultats
 #define GAGNE 1
+#define GAGNE1 2
+#define GAGNE2 3
 #define NONGAGNE 0
 
 

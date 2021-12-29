@@ -6,28 +6,69 @@
 int main()
 {
     Partie * partie = NULL;
-    int id;
-    int continuer=1;
+    int id,s;
+    int continuer=1,niveau,type,langue_dico,choix;
+    char * j1 =malloc(sizeof(char)*50),*j2=malloc(sizeof(char)*50), *mot,nom[50];
 
     //Juste un test
     while(continuer)
     {   clear_console();
-        switch(menu())
+        switch(menu_principal())
         {
             case 1 :
-                partie = initialiser_partie(MOYEN,FRANCAIS,7,"MANGEES","Dinyad");
-                clear_console();
-                jouer(partie);
+
+                niveau = get_niveau();
+                langue_dico = get_langue_dico();
+                type = get_type();
+                get_joueurs(&j1,&j2,type);
+                DEBUT :
+                    mot= get_mot_aleatoire(niveau+5,langue_dico);
+                    partie = initialiser_partie(niveau,langue_dico,type,niveau+5,mot,j1,j2);
+                    clear_console();
+                    s=jouer(partie);
+                    if(s==1)
+                    {
+                        printf("\t\tEntrer 1 pour rejouer, 0 pour revenir au menu principal : ");
+                        scanf("%d",&choix);
+                        if(choix==1)
+                            goto DEBUT;
+                    }
+                    else if(s==0)
+                        continuer=0;
+
+
+
             break;
             case 2 :
+                printf("\t\tVotre nom : ");
+                scanf("%s",nom);
+                print_parties_joueur(nom);
+                printf("\t\tChoisissez un id : ");
+                scanf("%d",&id);
+                if(si_joue(nom,id))
+                {
+                    partie = charger_partie(id);
+                    if(partie)
+                    {
+                        clear_console();
+                        jouer(partie);
+                    }
+                }
+                else
+                {
+                    printf("Mauvais choix");
+                }
+
+
+            break;
+            case 3 :
 
                 printf("id : ");
                 scanf("%d",&id);
                 partie = charger_partie(id);
                 if(partie)
                 {
-                    getchar();
-                    visualiser_une_partie(partie);
+                                    //visualiser_une_partie(partie);
                 }
                 else
                 {
@@ -37,8 +78,10 @@ int main()
 
                 }
             break;
-            case 3 :
+            case 4 :
             printf("\nBYE !!");
+            free(j1);
+            free(j2);
             continuer=0;
             break;
         }

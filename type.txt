@@ -4,12 +4,10 @@
             ######################################################
             ##                                                  ##            
             -----------------------------------------------------
-                                Menu principal
+                                Type de jeu
             -----------------------------------------------------
-                1-Jouer une nouvelle partie
-                2-Continuer une partie
-                3-Visualiser une partie
-                4-Quitter
-                ...
+                1-Un seul joueur
+                2-Un joueur contre l'ordi
+                3-Deux joueurs
             -----------------------------------------------------
             

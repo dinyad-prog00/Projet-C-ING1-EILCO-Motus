@@ -4,12 +4,9 @@
             ######################################################
             ##                                                  ##            
             -----------------------------------------------------
-                                Menu principal
+                        Dictionnaire linguistique
             -----------------------------------------------------
-                1-Jouer une nouvelle partie
-                2-Continuer une partie
-                3-Visualiser une partie
-                4-Quitter
-                ...
+                1-Français
+                2-Anglais
             -----------------------------------------------------
             
