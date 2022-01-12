@@ -1,6 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h> // Pour la fonction de pause sleep
 #include "fonctions.h"
 #include <time.h>
@@ -24,6 +21,8 @@ int auto_incrementation(){
 
 }
 
+
+//Inittialisation d'une partie
 Partie * initialiser_partie(int niveau, int dictionnaire,int type,int taille_mot,char * mot,char * joueur1,char * joueur2)
 {
     Partie * partie = malloc(sizeof(Partie));
@@ -73,19 +72,20 @@ Partie * initialiser_partie(int niveau, int dictionnaire,int type,int taille_mot
 
 int jouer(Partie * partie)
 {
-    char  mot[10],tour=partie->nb_propos%2;
+    char  *mot;
+    int jr,tour=partie->nb_propos%2;
     int resp;
     double beginTimeG,endTimeG,beginTime,endTime;
     interface_graphique(partie);
 
     beginTimeG = nbActuelSecondes();
-    while(partie->nb_propos!=6 && partie->resultat != GAGNE)
+    while(partie->nb_propos!=6 && partie->resultat == NONGAGNE)
     {
         beginTime = nbActuelSecondes();
         if(partie->type == _1_JOUEUR)
         {
-            printf("%s joue\nMot : ",partie->joueurs[0]);
-            scanf("%s",mot);
+            printf("\t\t%s joue",partie->joueurs[0]);
+            mot=recuperer_mot(partie);
             endTime = nbActuelSecondes();
         }
 
@@ -93,8 +93,8 @@ int jouer(Partie * partie)
         {
             if(tour == 0)
             {
-                printf("Tour de %s \nMot : ",partie->joueurs[0]);
-                scanf("%s",mot);
+                printf("\t\tTour de %s",partie->joueurs[0]);
+                mot=recuperer_mot(partie);
                 endTime = nbActuelSecondes();
                 tour=1;
             }
@@ -102,7 +102,7 @@ int jouer(Partie * partie)
             {
                 strcpy(mot,ordi_trouve_coup(partie));
                 endTime = nbActuelSecondes();
-                printf("Tour de l'ORDI => mot proposé : %s \n",mot);
+                printf("\t\tTour de l'ORDI => mot proposé : %s \n",mot);
                 tour=0;
                 sleep(4);
             }
@@ -111,21 +111,21 @@ int jouer(Partie * partie)
         {
             if(tour == 0)
             {
-                printf("Tour de %s \nMot : ",partie->joueurs[0]);
-                scanf("%s",mot);
+                printf("\t\tTour de %s ",partie->joueurs[0]);
+                mot=recuperer_mot(partie);
                 endTime = nbActuelSecondes();
                 tour=1;
             }
             else
             {
-                printf("Tour de %s \nMot : ",partie->joueurs[1]);
-                scanf("%s",mot);
+                printf("\t\tTour de %s ",partie->joueurs[1]);
+                mot=recuperer_mot(partie);
                 endTime = nbActuelSecondes();
                 tour=0;
             }
         }
 
-        if(strcmp(mot,"#help")==0)
+        if(strcmp(to_upper_case(mot),"#H")==0)
         {
             if( partie->type==1 && partie->help )
                 affiche1lettre(partie);
@@ -134,7 +134,7 @@ int jouer(Partie * partie)
 
         }
 
-        else if(strcmp(mot,"#quit")==0)
+        else if(strcmp(to_upper_case(mot),"#Q")==0)
         {
             printf("\t\tVoullez vous sauvegarder la partie?(0/1) : ");
             int resp;
@@ -147,21 +147,49 @@ int jouer(Partie * partie)
             return 0;
         }
 
-        else if(strcmp(mot,"#save")==0)
+        else if(strcmp(to_upper_case(mot),"#SV")==0)
         {
            sauvegarder_partie(partie);
             printf("\t\t\n               \033[5mPartie bien sauvegargée\033[0m");
             return 2;
         }
 
-        else if(strcmp(mot,"#stat")==0)
+        else if(strcmp(to_upper_case(mot),"#ST")==0)
+        {
+          if(partie->type==_1_JOUEUR)
+            statistiques_globales(partie->joueurs[0]);
+          else
+          {
+            if(tour==0)
+            {
+                jr=1;
+                tour=1;
+            }
+
+            else
+            {
+                jr=0;
+                tour=0;
+            }
+
+
+            statistiques_globales(partie->joueurs[jr]);
+          }
+
+           printf("Entrez pour continuer \n");
+           getchar();
+           getchar();
+           printf("Entrez pour continuer");
+        }
+
+        else if(strcmp(to_upper_case(mot),"#RL")==0)
         {
 
         }
 
-        else if(strcmp(mot,"#rules")==0)
+        else if(mot[0]=='#')
         {
-
+            printf("\n\\t\tPas d'action associée !!\n");
         }
 
 
@@ -169,12 +197,24 @@ int jouer(Partie * partie)
         {
             if(verifier_correspondance(mot,partie,endTime-beginTime)==1)
             {
-                partie->resultat=GAGNE;
+
+                if(partie->type==_1_JOUEUR)
+                {
+                    partie->resultat=GAGNE;
+                }
+                else
+                {
+                    if(tour==0)
+                        partie->resultat=J2_GAGNE;
+                    else
+                        partie->resultat=J1_GAGNE;
+                }
             }
 
             strcpy(partie->mots_proposes[partie->nb_propos],mot);
             partie->nb_propos++;
             getchar();
+
 
         }
         clear_console();
@@ -183,19 +223,39 @@ int jouer(Partie * partie)
     }
 
     endTimeG = nbActuelSecondes();
-
+    partie->etat=FINIE;
     partie->duree = endTimeG - beginTimeG;
 
     if(partie->resultat==GAGNE)
     {
-        printf("\033[5m\n\t\t\t\t#############\n\t\t\t\tBRAVOOOO !!! \n\t\t\t\t###########\033[0m \n\t\tPartie gagnée en %d coups.\n\t\tDurée : %lf secondes\n",partie->nb_propos,partie->duree);
-        for(int i=0;i<COUP_MAX;i++)
+
+        printf("\033[5m\n\t\t\t\t#################\n\t\t\t\tBRAVOOOO !!! \n\t\t\t\t#################\033[0m \n\t\tPartie gagnée en %d coups.\n\t\tDurée : %lf secondes\n",partie->nb_propos,partie->duree);
+
+        /*for(int i=0;i<COUP_MAX;i++)
             if(partie->evlts[i] !=NULL)
-                printf("\n=> %f",partie->evlts[i]->tmp);
+                printf("\n=> %f",partie->evlts[i]->tmp);*/
+    }
+    else if(partie->resultat==J1_GAGNE)
+    {
+
+        printf("\033[5m\n\t\t\t\t#################\n\t\t\t\tBRAVOOOO %s !!! \n\t\t\t\t#################\033[0m \n\t\tPartie gagnée en %d coups.\n\t\tDurée : %lf secondes\n",partie->joueurs[0],partie->nb_propos,partie->duree);
+
+        /*for(int i=0;i<COUP_MAX;i++)
+            if(partie->evlts[i] !=NULL)
+                printf("\n=> %f",partie->evlts[i]->tmp);*/
+    }
+    else if(partie->resultat==J2_GAGNE)
+    {
+
+        printf("\033[5m\n\t\t\t\t#################\n\t\t\t\tBRAVOOOO %s!!! \n\t\t\t\t#################\033[0m \n\t\tPartie gagnée en %d coups.\n\t\tDurée : %lf secondes\n",partie->joueurs[1],partie->nb_propos,partie->duree);
+
+        /*for(int i=0;i<COUP_MAX;i++)
+            if(partie->evlts[i] !=NULL)
+                printf("\n=> %f",partie->evlts[i]->tmp);*/
     }
     else
     {
-        printf("\n\t\t\t\t#############\n\t\t\t\tPerdu !!! \n\t\t\t\t###########\033[0m \n\t\tDurée : %lf secondes\n",partie->duree);
+        printf("\n\t\t\t\t#################\n\t\t\t\tPerdu !!! \n\t\t\t\t#################\033[0m \n\t\tDurée : %lf secondes\n",partie->duree);
 
         printf("\n\t\tLe mot était : %s \n\n",partie->mot_a_trouver);
     }
@@ -292,6 +352,8 @@ void print_parties_joueur(char * joueur)
 
 }
 
+
+//Verifie si la partie était deja sauvegardee avant (reprise d'une partie)
 int si_joue(char * joueur,int id)
 {
     char nom[50];
@@ -319,6 +381,21 @@ int si_joue(char * joueur,int id)
 
     return 0;
 }
+
+
+
+//Format de sauvegarge d'une partie dans un fichier
+
+/*
+id  niveau  dictionnaire    taille_mot  type  joueur1  joueur2
+mot_a_rouve  nb_propos   duree   etat    resultat  help
+etat_lettre
+mot1    temp1
+mot2    temp2
+mot3    temp3
+...      ...
+
+Sauvegarde d'une partie */
 
 void sauvegarder_partie(Partie * partie )
 {
@@ -412,11 +489,18 @@ Partie * charger_partie(int id)
     return partie;
 }
 
-/*
+
+//Charger une partie
 void visualiser_une_partie(Partie * partie)
 {
-    int nb_propos = partie->nb_propos;
+    int nb_propos = partie->nb_propos,i,tour=0;
     partie->nb_propos=0;
+
+    for(i=0;i<nb_propos;i++)
+    {
+        free(partie->evlts[i]);
+        partie->evlts[i]=NULL;
+    }
 
     printf("\nVous voulez visualiser une partie.\nTapez entrer pour commencez...");
     getchar();
@@ -424,10 +508,13 @@ void visualiser_une_partie(Partie * partie)
     {
         clear_console();
         interface_graphique(partie);
-        printf("%s \033[5m propose\033[0m : \033[34m%s\033[0m\n",partie->joueur,partie->mots_proposes[partie->nb_propos]);
+        printf("%s \033[5m propose\033[0m : \033[34m%s\033[0m\n",partie->joueurs[tour%2],partie->mots_proposes[partie->nb_propos]);
+        verifier_correspondance(partie->mots_proposes[partie->nb_propos],partie,0.0);
         sleep(4);
 
         partie->nb_propos++;
+        if(partie->type != _1_JOUEUR)
+            tour++;
 
 
         if(partie->nb_propos==nb_propos)
@@ -443,7 +530,17 @@ void visualiser_une_partie(Partie * partie)
 
 }
 
-*/
+void free_partie(Partie * partie)
+{
+    int i;
+
+    for(i=0;i<partie->nb_propos;i++)
+        if(partie->evlts[i]!=NULL)
+            free(partie->evlts[i]);
+
+    free(partie);
+
+}
 
 //Afficher le contenu d'un fichier sur console
 void print_file(char *fichier)
@@ -511,14 +608,7 @@ void print_mot_succes(char * mot,char * a_touver)
 }
 
 
-/*void print_entete(int taille)
-{
-    int i;
-    printf("\n			#####");
-    for(i=0;i<taille;i++)
-        printf("######");
 
-}*/
 
 void print_espace(int taille)
 {
@@ -587,6 +677,8 @@ void print_ligne(Evolution * evlt,int taille)
     }
 
 }
+
+//Supprimer la console selon le SE
 void clear_console()
 {
     #if defined _WIN32
@@ -598,10 +690,12 @@ void clear_console()
     #endif
 }
 
+
+//Affichage de l'interface graphique
 void interface_graphique(Partie *partie)
 {
 
-    //printf("\n%s\n",partie->mot_a_trouver);
+
     print_file("entete.txt");
 
     for(int i=0 ;i< COUP_MAX;i++)
@@ -618,25 +712,14 @@ void interface_graphique(Partie *partie)
     print_file("pied.txt");
 
     printf("\n                        ______________________________________________________");
-    printf("\n                        | \033[36m#help(%d)\033[0m: aide-moi  \033[36m#quit\033[0m: quitter  \033[36m#rules\033[0m: règles |",partie->help);
-    printf("\n                        |    \033[36m#save\033[0m: sauvegarder       \033[36m#stat\033[0m: statistiques    |");
+    printf("\n                        | \033[36m#h(%d)\033[0m: aide-moi       \033[36m#q\033[0m: quitter       \033[36m#rl\033[0m: règles |",partie->help);
+    printf("\n                        |    \033[36m#sv\033[0m: sauvegarder           \033[36m#st\033[0m: statistiques    |");
     printf("\n                        ______________________________________________________\n");
 
 }
 
 
-/*if(i< partie->nb_propos)
-        {
-            if(strcmp(partie->mots_proposes[i],partie->mot_a_trouver)==0)
-                print_mot_succes(partie->mots_proposes[i],partie->mot_a_trouver);
-            else
-                print_mot(partie->mots_proposes[i],partie->mot_a_trouver);
-        }
-
-        else
-             print_vide();*/
-
-
+//Afficher le menu principal
 int menu_principal()
 {
     int choix;
@@ -654,6 +737,7 @@ int menu_principal()
 
 }
 
+//Recuperer le niveau
 int get_niveau()
 {
     int choix;
@@ -671,6 +755,8 @@ int get_niveau()
     return choix;
 
 }
+
+//Recuperer le type de jeu ( seul, contre ordi ou a deux)
 int get_type()
 {
     int choix;
@@ -688,6 +774,7 @@ int get_type()
 
 }
 
+//Recuperer le dico (anglai ou français)
 int get_langue_dico()
 {
     int choix;
@@ -705,6 +792,10 @@ int get_langue_dico()
 
 }
 
+/*
+Recuperer le nom des joueurs ou du joueus,
+Dans le cas d'un seul joueur, j2 est RIEN
+*/
 void get_joueurs(char ** j1, char ** j2,int type)
 {
     clear_console();
@@ -731,6 +822,11 @@ void get_joueurs(char ** j1, char ** j2,int type)
     }
 }
 
+
+/*
+Envoie un nombre aleatoire entre _min et _max
+Utile pour tirer un mot aleatoire du dico
+*/
 int nombre_aleatoire(int _min,int _max)
 {
     static int first = 0;
@@ -746,6 +842,7 @@ int nombre_aleatoire(int _min,int _max)
     return (int)(rand() / (double)RAND_MAX * (_max-_min +1)) + _min;
 }
 
+////Recuperer mot aleatoire d'un dico
 char * get_mot_aleatoire(int taille,int langue)
 {
     char * mot = malloc(sizeof(char)*(taille+1));
@@ -783,8 +880,19 @@ char * get_mot_aleatoire(int taille,int langue)
     return mot;
 }
 
-//Faire jouer l'ordinateur
 
+ ////////////////////////////////////////////////////////
+
+/*
+Le but des focntion suivante est de aire jouer l'ordinateur
+
+*/
+
+/*
+ Verifie si le caractere etait deja proposé, present dans le mot mais mal placé
+ On va supposer que l'ordi ne connait pas le mot  à trouver.
+ Il va juste se baser sur l'evolution du jeu
+*/
 int presentSimple(Partie * partie, char c)
 {
     int i,j;
@@ -800,6 +908,45 @@ int presentSimple(Partie * partie, char c)
     return 0;
 }
 
+/*
+    Verifie si le caractere est deja proposé mais non present dans le mont à trouver
+    On va supposer que l'ordi ne connait pas le mot  à trouver.
+    Il va juste se baser sur l'evolution du jeu
+ */
+int pasPresent(Partie * partie, char c)
+{
+    int i,j;
+    for(i=0;i<partie->nb_propos;i++)
+    {
+        for(j=0;j<partie->taille_mot;j++)
+        {
+            if(c==partie->evlts[i]->mot_propose[j] && partie->evlts[i]->correspondance[j]==0)
+                return 1;
+        }
+    }
+
+    return 0;
+
+}
+
+/*
+    Pour chaque mot, il determine le nombre de carecteres deja connus comme
+     n'exisatnt pas dans le mot a trouver en se basant sur l'evolution du
+*/
+int nbPasPresent(Partie * partie,char * mot)
+{
+    int i,nb=0;
+    for(i=0;i<partie->taille_mot;i++)
+    {
+        if(pasPresent(partie,mot[i]))
+            nb++;
+    }
+    return nb;
+}
+
+/*
+    Pour chaque mot, il determine le nombre de carecteres bien place en se basant sur l'evolution du
+*/
 int nombre_correspondance(Partie * partie,char * mot,int *n)
 {
     int i,nb=0,m=0;
@@ -817,6 +964,8 @@ int nombre_correspondance(Partie * partie,char * mot,int *n)
     return nb;
 }
 
+
+//Verifie si le mot est deja propose
 int deja_propose(char proposes[7][10],int nb_propos, char *mot)
 {
     int i=0;
@@ -829,6 +978,8 @@ int deja_propose(char proposes[7][10],int nb_propos, char *mot)
     return 0;
 }
 
+
+//Utilise les fonctions precedentes pour trouver un coup intelligent pour l'ordinateur
 char * ordi_trouve_coup(Partie * partie)
 {
     char * coup_ordi = malloc(sizeof(char)*(partie->taille_mot+1)),* debut_mot = malloc(sizeof(char)*(partie->taille_mot+1));
@@ -851,40 +1002,46 @@ char * ordi_trouve_coup(Partie * partie)
 
     FILE * file = fopen(fichier,"r");
     rewind(file);
-    int nb_max=0,nb=0,ps=0,ps_max=0;
+    int nb_max=0,nb=0,ps=0,ps_max=0,nonp=0,nonp_min=10;
     while( !feof(file))
     {
         fscanf(file,"%s",mot) ;
         //if(strncmp(mot,debut_mot,strlen(debut_mot)) == 0)
         //{
             nb=nombre_correspondance(partie,mot,&ps);
+            nonp=nbPasPresent(partie,mot);
             if( deja_propose(partie->mots_proposes,partie->nb_propos,mot)==0 )
             {
                 if(nb>nb_max)
                 {
                     nb_max=nb;
                     ps_max=ps;
+                    nonp_min=nonp;
                     strcpy(coup_ordi,mot);
                 }
-                else if(nb==nb_max && ps > ps_max)
+                else if(nb==nb_max)
                 {
-                    nb_max=nb;
-                    ps_max=ps;
-                    strcpy(coup_ordi,mot);
+                    if(ps>ps_max)
+                    {
+                        nb_max=nb;
+                        ps_max=ps;
+                        nonp_min=nonp;
+                        strcpy(coup_ordi,mot);
+                    }
+                    else if(nonp < nonp_min)
+                    {
+                        nb_max=nb;
+                        ps_max=ps;
+                        nonp_min=nonp;
+                        strcpy(coup_ordi,mot);
+                    }
+
                 }
+
 
             }
-
-        //}
-        //else
-        /*{
-            strcpy(coup_ordi,"MANGUES");
-             break;
-        //}*/
-
     }
-
-    printf("\n%d---%d\n",nb_max,ps_max);
+    free(debut_mot);
     return coup_ordi;
 }
 

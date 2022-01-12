@@ -2,6 +2,7 @@
 #define STRUCTURES_H_INCLUDED
 
 //Structure definisant l'évolution du jeu.
+//Utiliter essentiellement pour faire jouer l'ordi
 typedef struct evolution {
 	char mot_propose[10];
 	int correspondance[10]; // 2 si existe et bien placée, 1 si existe et mal placéé et 0 si n'existe pas
@@ -26,8 +27,6 @@ typedef struct partie{
 	Evolution * evlts[COUP_MAX];
 	int resultat;
 	int help;
-
-
 } Partie;
 
 
@@ -44,6 +43,21 @@ mot1    temp1
 mot2    temp2
 mot3    temp3
 ...      ...
+
+*/
+
+/*
+
+Fonctions essentielles
+---------------------
+jouer ;
+mot_aleatoire;
+verifier_conrrespondance;
+ordi_trouve_coup;
+
+
+
+
 
 */
 

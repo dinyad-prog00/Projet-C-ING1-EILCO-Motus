@@ -28,6 +28,7 @@ int main()
                     s=jouer(partie);
                     if(s==1)
                     {
+                        free_partie(partie);
                         printf("\t\tEntrer 1 pour rejouer, 0 pour revenir au menu principal : ");
                         scanf("%d",&choix);
                         if(choix==1)
@@ -62,8 +63,27 @@ int main()
 
             break;
             case 3 :
+                printf("\t\tVotre nom : ");
+                scanf("%s",nom);
+                print_parties_joueur(nom);
+                printf("\t\tChoisissez un id : ");
+                scanf("%d",&id);
+                if(si_joue(nom,id))
+                {
+                    partie = charger_partie(id);
+                    if(partie && partie->etat==FINIE)
+                    {
+                        clear_console();
+                        visualiser_une_partie(partie);
+                    }
+                    printf("\n\t\tVous ne pouvez pas visualiser une partie non achévée !!");
+                }
+                else
+                {
+                    printf("Mauvais choix");
+                }
 
-                printf("id : ");
+                /*printf("id : ");
                 scanf("%d",&id);
                 partie = charger_partie(id);
                 if(partie)
@@ -76,7 +96,7 @@ int main()
                     getchar();
                     getchar();
 
-                }
+                }*/
             break;
             case 4 :
             printf("\nBYE !!");

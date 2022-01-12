@@ -33,8 +33,8 @@
 
 //Résultats
 #define GAGNE 1
-#define GAGNE1 2
-#define GAGNE2 3
+#define J1_GAGNE 2
+#define J2_GAGNE 3
 #define NONGAGNE 0
 
 
