@@ -21,13 +21,13 @@
 1636055930 source:/home/donatien/Documents/Projet C/Projet C/fonctions3.c
 	"fonctions.h"
 
-1641937969 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions1.c
+1642116922 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions1.c
 	<unistd.h>
 	"fonctions.h"
 	<time.h>
 	<sys/time.h>
 
-1641936520 /home/donatien/Documents/Projet C/Projet C - Motus/fonctions.h
+1642356588 /home/donatien/Documents/Projet C/Projet C - Motus/fonctions.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -36,17 +36,42 @@
 
 1640800425 /home/donatien/Documents/Projet C/Projet C - Motus/macros.h
 
-1641936465 /home/donatien/Documents/Projet C/Projet C - Motus/structures.h
+1642110092 /home/donatien/Documents/Projet C/Projet C - Motus/structures.h
 
 1641413569 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions2.c
 	"fonctions.h"
 
-1641420802 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions3.c
+1642112767 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions3.c
 	"fonctions.h"
 
-1641936862 source:/home/donatien/Documents/Projet C/Projet C - Motus/main.c
+1642374117 source:/home/donatien/Documents/Projet C/Projet C - Motus/main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	"fonctions.h"
+	"entetes.h"
+
+1642376769 source:/home/donatien/Documents/Projet C/Projet C - Motus/fonctions.c
+	"entetes.h"
+
+1642377843 source:/home/donatien/Documents/Projet C/Projet C - Motus/auxiliaires.c
+	<sys/time.h>
+	"entetes.h"
+
+1642377787 /home/donatien/Documents/Projet C/Projet C - Motus/entetes.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	<unistd.h>
+	"macros.h"
+	"structures.h"
+
+1642357562 source:/home/donatien/Documents/Projet C/Projet C - Motus/getters.c
+	"entetes.h"
+
+1642377182 source:/home/donatien/Documents/Projet C/Projet C - Motus/interface.c
+	"entetes.h"
+
+1642359805 source:/home/donatien/Documents/Projet C/Projet C - Motus/ia.c
+	"entetes.h"
 

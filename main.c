@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fonctions.h"
+#include "entetes.h"
 
 int main()
 {
@@ -10,12 +10,13 @@ int main()
     int continuer=1,niveau,type,langue_dico,choix;
     char * j1 =malloc(sizeof(char)*50),*j2=malloc(sizeof(char)*50), *mot,nom[50];
 
-    //Juste un test
+
     while(continuer)
     {   clear_console();
         switch(menu_principal())
         {
             case 1 :
+            //Jouer une nouvelle partie
 
                 niveau = get_niveau();
                 langue_dico = get_langue_dico();
@@ -29,7 +30,7 @@ int main()
                     if(s==1)
                     {
                         free_partie(partie);
-                        printf("\t\tEntrer 1 pour rejouer, 0 pour revenir au menu principal : ");
+                        printf("\n\t\tEntrer 1 pour rejouer, 0 pour revenir au menu principal : ");
                         scanf("%d",&choix);
                         if(choix==1)
                             goto DEBUT;
@@ -41,6 +42,7 @@ int main()
 
             break;
             case 2 :
+            //Continuer une partie
                 printf("\t\tVotre nom : ");
                 scanf("%s",nom);
                 print_parties_joueur(nom);
@@ -63,42 +65,46 @@ int main()
 
             break;
             case 3 :
+            //Visualiser une partie
                 printf("\t\tVotre nom : ");
                 scanf("%s",nom);
-                print_parties_joueur(nom);
-                printf("\t\tChoisissez un id : ");
-                scanf("%d",&id);
-                if(si_joue(nom,id))
+                if(print_parties_joueur(nom))
                 {
-                    partie = charger_partie(id);
-                    if(partie && partie->etat==FINIE)
+                    printf("\n\t\tLes parties récentes sont d'id plus elevé\n");
+                    printf("\t\tChoisissez un id : ");
+                    scanf("%d",&id);
+                    if(si_joue(nom,id))
                     {
-                        clear_console();
-                        visualiser_une_partie(partie);
+                        partie = charger_partie(id);
+                        if(partie && partie->etat==FINIE)
+                        {
+                            clear_console();
+                            visualiser_une_partie(partie);
+                        }
+                        else
+                            printf("\n\t\t\033[5mVous ne pouvez pas visualiser une partie non achévée !!\033[0m");
                     }
-                    printf("\n\t\tVous ne pouvez pas visualiser une partie non achévée !!");
+                    else
+                    {
+                        printf("Mauvais choix");
+                    }
                 }
-                else
-                {
-                    printf("Mauvais choix");
-                }
-
-                /*printf("id : ");
-                scanf("%d",&id);
-                partie = charger_partie(id);
-                if(partie)
-                {
-                                    //visualiser_une_partie(partie);
-                }
-                else
-                {
-                    printf("Entrer pour continuer !");
-                    getchar();
-                    getchar();
-
-                }*/
             break;
+
             case 4 :
+            //Consulter statistiques
+            printf("\t\tVotre nom : ");
+            scanf("%s",nom);
+            clear_console();
+            print_file("entete.txt");
+            printf("\n\n\n");
+            statistiques_globales(nom);
+
+            printf("\n\n\t\t\33[5m\33[32mEntrez pour continuer \033[0m\n");
+            getchar();
+            getchar();
+            break;
+            case 5 :
             printf("\nBYE !!");
             free(j1);
             free(j2);

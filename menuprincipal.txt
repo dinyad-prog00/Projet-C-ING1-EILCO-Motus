@@ -9,6 +9,7 @@
                 1-Jouer une nouvelle partie
                 2-Continuer une partie
                 3-Visualiser une partie
-                4-Quitter
+                4-Statistiques
+                5-Quitter
             -----------------------------------------------------
             

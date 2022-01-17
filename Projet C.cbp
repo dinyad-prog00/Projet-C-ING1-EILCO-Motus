@@ -31,14 +31,20 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="fonctions.h" />
-		<Unit filename="fonctions1.c">
+		<Unit filename="auxiliaires.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="fonctions2.c">
+		<Unit filename="entetes.h" />
+		<Unit filename="fonctions.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="fonctions3.c">
+		<Unit filename="getters.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ia.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="interface.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="macros.h" />

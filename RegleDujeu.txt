@@ -1,0 +1,38 @@
+			##############################################################################################
+			##                                       REGLES DU JEU                                      ##
+			##                                                                                          ##
+			##############################################################################################
+			##                     Les règles de MOTUS sont assez simples, vous devez                   ##
+			##                         retrouver un mot en 6 coups au maximum                           ##
+
+
+				1==>Entrez votre proposition tout en respectant la première lettre dévoilée
+
+				2==>Vous ne pouvez pas répeter un mot qui est déjà proposé dans la grille
+
+				3==>MOTUS analyse votre proposition et vous indique trois possibilites :
+
+					-> si la couleur des lettres s'eclaire en jaune, cela 
+						signifie que ces lettres sont presentes dans
+						le mot, mais ne sont pas a la bonne place
+
+					-> si la couleur des lettres s'eclaire en rouge, cela 
+						signifie que ces lettres sont presentes et bien
+						placées (vous constaterez d'ailleurs que sur les 
+						lignes suivantes ces lettres seront deja positionnees)
+
+					-> Si la couleur de lettre ne s'eclaire pas, ces 
+						lettres ne sont pas dans le mot
+
+				4==>Si vous jouez a deux ou contre l'ordinateur, chacun d'entre vous joue 
+					apres l'autre, apres chaque proposition
+
+				5==>Les mots avec les caractères spéciaux ne sont pas valables
+
+			##      6==>Veuillez respecter la taille du niveau choisi                                   ##
+			##                                                                                          ##
+			##############################################################################################
+			##                                   Amusez vous bien !!                                    ##
+			##                                                                                          ##
+			##############################################################################################
+									                               
